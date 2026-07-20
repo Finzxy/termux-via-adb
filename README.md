@@ -1,51 +1,54 @@
 # Accessing the Termux Environment via ADB (No Root Required)
 
-This guide explains how to access the Termux user environment from an active Android Debug Bridge (ADB) shell session **without requiring root access**. By leveraging Android's `run-as` command, you can execute commands within the Termux application sandbox while preserving the application's user environment.
+This guide shows how to access the Termux environment from an ADB shell without requiring root privileges.
 
-> **Note**
->
-> This method works only if the installed version of Termux supports the `run-as` command. No root privileges or modifications to the Android system are required.
+> [!NOTE]
+> This method uses Android's `run-as` command and only works with Termux versions that support it.
 
-## Prerequisites
+<p align="center">
+  <img src="Screenshot from 2026-07-20 09-35-03.png" alt="Termux running inside ADB shell" width="800">
+</p>
 
-Before proceeding, ensure that the following requirements are met:
+## Requirements
 
-* Termux is installed on the target Android device.
-* USB Debugging or Wireless Debugging is enabled.
-* An active ADB connection has been established.
-* An interactive shell has been opened using `adb shell`.
+Before you begin, make sure you have:
 
-## Launch the Termux Shell
+* Termux installed on your Android device.
+* USB Debugging or Wireless Debugging enabled.
+* An active ADB connection.
+* An interactive `adb shell` session.
 
-Execute the following command to start the Termux Bash shell within the application's sandbox:
+## 1. Launch the Termux Shell
+
+Run the following command inside the ADB shell:
 
 ```bash
 run-as com.termux /data/data/com.termux/files/usr/bin/bash
 ```
 
-## Configure the Environment
+## 2. Configure the Environment
 
-Since the default ADB shell does not inherit the Termux environment, add the Termux binary directory to the `PATH` variable:
+Add the Termux binary directory to your `PATH`:
 
 ```bash
 export PATH=/data/data/com.termux/files/usr/bin:$PATH
 ```
 
-This makes all Termux-installed executables (such as `pkg`, `git`, `python`, and others) available in the current session.
+This allows you to use all Termux commands, including `pkg`, `git`, `python`, and other installed packages.
 
-## Change to the Home Directory
+## 3. Change to the Home Directory
 
-Navigate to the default Termux home directory:
+Switch to the default Termux home directory:
 
 ```bash
 cd /data/data/com.termux/files/home
 ```
 
-The shell is now configured to behave similarly to a standard Termux session.
+You are now working inside the Termux environment.
 
-## Verification
+## Verify the Environment
 
-Verify that the environment has been initialized correctly:
+Check your current working directory:
 
 ```bash
 pwd
@@ -57,7 +60,7 @@ Expected output:
 /data/data/com.termux/files/home
 ```
 
-To verify that the Termux binaries are being used:
+Verify that the Termux binaries are being used:
 
 ```bash
 which bash
